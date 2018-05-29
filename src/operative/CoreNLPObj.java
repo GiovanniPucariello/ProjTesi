@@ -2,13 +2,11 @@ package operative;
 
 import edu.stanford.nlp.ling.CoreLabel;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
-import java.util.Set;
 
 import edu.stanford.nlp.ling.CoreAnnotations.PartOfSpeechAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.SentencesAnnotation;
@@ -153,11 +151,10 @@ public class CoreNLPObj {
 						// this is the NER label of the token
 						// String ne = token.get(NamedEntityTagAnnotation.class);
 
-
 						if (pos.equals("NN") || pos.equals("NNS")) {
-							for(Term t: listForTerm) {
-								if(t.getWordForm().equals(word)) {
-									
+							for (Term t : listForTerm) {
+								if (t.getWordForm().equals(word)) {
+
 								}
 							}
 						}

@@ -1,10 +1,10 @@
 package test;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-import operative.CoreNLPObj;
 import operative.Lettore;
 import operative.Term;
 
@@ -12,23 +12,27 @@ public class Test {
 
 	public static void main(String[] args) {
 
-		Lettore lettore = new Lettore();
-		lettore.getReviewId("I:1034");
-		lettore.getTitleId("I:1034");
-		lettore.readNotRilevantTerm();
-		lettore.readRilevantTerm();
-		CoreNLPObj o = new CoreNLPObj(lettore);
-		
-		o.excractTerm();
-		
+		File termRel = new File("termRelevant.txt");
+		File termNotRel = new File("termNotRelevant.txt");
+
+		Lettore lettore = new Lettore("I:1034");
+		lettore.getReviewId();
+		lettore.getTitleId();
+
+		lettore.readTerms(termRel);
+		lettore.readTerms(termNotRel);
+
+		// CoreNLPObj o = new CoreNLPObj(lettore);
+
+		// o.excractTerm();
+
 		HashSet<Term> prova = new HashSet<>();
-		
-		prova = o.getListForTerm();
-		
-		for(Term t: prova) {
-			System.out.println(t.toString());
-		}
-		
+
+		// prova = o.getListForTerm();
+
+		// for(Term t: prova) {
+		// System.out.println(t.toString());
+		// }
 
 		System.out.println(lettore.getTitoloItem());
 		System.out.println("Term Relevant: ------->" + lettore.getTermRelevant().toString());
@@ -46,7 +50,6 @@ public class Test {
 		String stringa = reviewACaso.get(0);
 
 		String[] array = stringa.split(" ");
-	
 
 		System.out.println(array.length);
 

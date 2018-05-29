@@ -95,22 +95,22 @@ public class CoreNLPObj {
 	}
 
 	public void removeTermsNotRelevant() {
+
 		Iterator<Term> it = listForTerm.iterator();
 		while (it.hasNext()) {
 			Term t = it.next();
-			if (t.getWordForm().contains(".") || t.getWordForm().contains("%")
-					|| t.getWordForm().contains("'") || t.getWordForm().contains("?")
-					|| t.getWordForm().contains("!") || t.getWordForm().contains("\"")
+			if (t.getWordForm().contains(".") || t.getWordForm().contains("%") || t.getWordForm().contains("'")
+					|| t.getWordForm().contains("?") || t.getWordForm().contains("!") || t.getWordForm().contains("\"")
 					|| t.getWordForm().contains("-") || t.getWordForm().contains("/")
 					|| t.getWordForm().contains("_")) {
 				it.remove();
-			}else if(t.getWordForm().length()<=2) {
+			} else if (t.getWordForm().length() <= 2) {
 				it.remove();
-			}else if(t.getWordForm().matches(".*\\d+.*")) {
+			} else if (t.getWordForm().matches(".*\\d+.*")) {
 				it.remove();
-			}else {
-				for(String s: reader.getTermNotRelevant()) {
-					if(t.getWordForm().equals(s)) {
+			} else {
+				for (String s : reader.getTermNotRelevant()) {
+					if (t.getWordForm().equals(s)) {
 						it.remove();
 					}
 				}
@@ -118,9 +118,56 @@ public class CoreNLPObj {
 		}
 	}
 
-	
-	
-	
+	public void createMapForPositiveTerm() {
+		// creates a StanfordCoreNLP object
+		Properties props = new Properties();
+		props.setProperty("annotators", "tokenize, ssplit, pos, parse, sentiment");
+		StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
+
+		for (int i = 0; i < reviews.size(); i++) {
+			String text = reviews.get(i);
+			// create an empty Annotation just with the given text
+			Annotation document = new Annotation(text);
+			// run all Annotators on this text
+			pipeline.annotate(document);
+			// these are all the sentences in this document
+			// a CoreMap is essentially a Map that uses class objects as keys and has values
+			// with custom types
+			List<CoreMap> sentences = document.get(SentencesAnnotation.class);
+
+			for (CoreMap sentence : sentences) {
+
+				// inizio prova
+				// System.out.println("\nSentiment of sentence\n");
+				String sentimentRecensione = sentence.get(SentimentCoreAnnotations.SentimentClass.class);
+				// System.out.println(mamma + "\n\n");
+				// fine prova
+
+				if (sentimentRecensione.equals("Positive")) {
+					for (CoreLabel token : sentence.get(TokensAnnotation.class)) {
+
+						// this is the text of the token
+						String word = token.get(TextAnnotation.class);
+						// this is the POS tag of the token
+						String pos = token.get(PartOfSpeechAnnotation.class);
+						// this is the NER label of the token
+						// String ne = token.get(NamedEntityTagAnnotation.class);
+
+
+						if (pos.equals("NN") || pos.equals("NNS")) {
+							for(Term t: listForTerm) {
+								if(t.getWordForm().equals(word)) {
+									
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+	}
+
 	public HashSet<Term> getListForTerm() {
 		return listForTerm;
 	}

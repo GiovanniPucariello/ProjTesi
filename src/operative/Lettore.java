@@ -6,9 +6,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- * This class is used to read and storage
- * input data from files.
- *   
+ * This class is used to read and storage input data from files.
+ * 
  * 
  * @author Plantone Vincenzo
  * @author Pucariello Giovanni
@@ -37,8 +36,6 @@ public class Lettore {
 		s = null;
 	}
 
-	
-	
 	/**
 	 * Get method of the variable "counterReviewId".
 	 * 
@@ -48,8 +45,6 @@ public class Lettore {
 		return counterReviewId;
 	}
 
-	
-	
 	/**
 	 * Get method of the variable "idItem".
 	 * 
@@ -68,8 +63,6 @@ public class Lettore {
 		this.idItem = idItem;
 	}
 
-	
-	
 	/**
 	 * Get method of the variable "titoloItem".
 	 * 
@@ -88,8 +81,6 @@ public class Lettore {
 		this.titoloItem = titoloItem;
 	}
 
-	
-	
 	/**
 	 * Get method of the list "reviewFilteredById".
 	 * 
@@ -108,8 +99,6 @@ public class Lettore {
 		this.reviewFilteredById = reviewFilteredById;
 	}
 
-	
-	
 	/**
 	 * Get method of the list "termNotRelevant".
 	 * 
@@ -128,8 +117,6 @@ public class Lettore {
 		this.termNotRelevant = termNotRelevant;
 	}
 
-	
-	
 	/**
 	 * Get method of the list "termRelevant".
 	 * 
@@ -148,8 +135,6 @@ public class Lettore {
 		this.termRelevant = termRelevant;
 	}
 
-	
-	
 	/**
 	 * Get method that takes idItem and sets the list of reviews for item
 	 */
@@ -182,8 +167,6 @@ public class Lettore {
 
 	} // end getReviewId() method
 
-	
-	
 	/**
 	 * Take idItem and set the title
 	 */
@@ -210,8 +193,6 @@ public class Lettore {
 
 	} // end getTitleId() method
 
-	
-	
 	/**
 	 * Read Relevant and Not Relevant terms from file and add them in
 	 * termNotRelevant and termRelevant (ArrayList<String>)
@@ -245,6 +226,4 @@ public class Lettore {
 
 	} // end readTerms() method
 
-	
-	
 } // end Class

@@ -2,14 +2,16 @@ package test;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashSet;
+//import java.util.HashSet;
 import java.util.List;
 
 import operative.Lettore;
-import operative.Term;
+//import operative.Term;
 
 public class Test {
 
+	private Test() {}
+	
 	public static void main(String[] args) {
 
 		File termRel = new File("termRelevant.txt");
@@ -26,7 +28,7 @@ public class Test {
 
 		// o.excractTerm();
 
-		HashSet<Term> prova = new HashSet<>();
+		//HashSet<Term> prova = new HashSet<>();
 
 		// prova = o.getListForTerm();
 
@@ -43,7 +45,7 @@ public class Test {
 
 		List<String> reviewACaso = new ArrayList<>();
 
-		int numSpace = 0;
+		//int numSpace = 0;
 
 		reviewACaso.add("Carlo e franco-stasera sono nervoso e mammt mor ");
 

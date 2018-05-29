@@ -8,7 +8,6 @@ import java.util.Scanner;
 /**
  * This class is used to read and storage input data from files.
  * 
- * 
  * @author Plantone Vincenzo
  * @author Pucariello Giovanni
  *

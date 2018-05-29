@@ -6,9 +6,12 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- * This class 
+ * This class is used to read and storage
+ * input data from files.
+ *   
  * 
- * @author
+ * @author Plantone Vincenzo
+ * @author Pucariello Giovanni
  *
  */
 public class Lettore {
@@ -165,7 +168,7 @@ public class Lettore {
 				String[] parts = line.split("\t");
 				if (parts[0].equals(idItem)) {
 					review = parts[3];
-					this.reviewFilteredById.add(review);
+					reviewFilteredById.add(review);
 					counterReviewId++;
 				}
 			}
@@ -185,9 +188,7 @@ public class Lettore {
 	 * Take idItem and set the title
 	 */
 	public void getTitleId() {
-		String title = null;
 		String line = null;
-
 		/*
 		 * try-block that controls the access to the input file
 		 * "list_items_book(reduced).txt".
@@ -198,8 +199,7 @@ public class Lettore {
 				line = s.nextLine();
 				String[] parts = line.split("\t");
 				if (parts[0].equals(idItem)) {
-					title = parts[1];
-					this.setTitoloItem(title);
+					titoloItem = parts[1];
 				}
 			}
 		} catch (IOException e) {

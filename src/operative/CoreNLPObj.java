@@ -2,6 +2,7 @@ package operative;
 
 import edu.stanford.nlp.ling.CoreLabel;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -17,28 +18,47 @@ import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.sentiment.SentimentCoreAnnotations;
 import edu.stanford.nlp.util.CoreMap;
 
+
+/**
+ * 
+ * 
+ * @author Pucariello Giovanni
+ *
+ */
 public class CoreNLPObj {
 
-	private Lettore reader = null;
-	private HashSet<Term> listForTerm = null;
+	private Dizionario terms;
+	private List<String> reviews;
+	private HashSet<Term> listForTerm;
+	
 	private HashMap<Term, List<String>> mapTermWithPositiveReviews;
 	private HashMap<Term, List<String>> mapTermWithVeryPositiveReviews;
 	private HashMap<Term, List<String>> mapTermWithNegativeReviews;
 	private HashMap<Term, List<String>> mapTermWithVeryNegativeReviews;
-	private List<String> reviews = null;
-
-	public CoreNLPObj(Lettore reader) {
-		this.reader = reader;
-		this.listForTerm = new HashSet<>();
-		this.mapTermWithPositiveReviews = new HashMap<>();
-		this.mapTermWithNegativeReviews = new HashMap<>();
-		this.mapTermWithVeryNegativeReviews = new HashMap<>();
-		this.mapTermWithVeryPositiveReviews = new HashMap<>();
-		this.reviews = reader.getReviewFilteredById();
-
+	
+	/**
+	 * Constructor class.
+	 * 
+	 * @param terms
+	 * @param item
+	 */
+	public CoreNLPObj(Dizionario terms, Item item) {
+		this.terms = terms;
+		listForTerm = new HashSet<>();
+		reviews = item.getReviewsFilteredById();
+		
+		mapTermWithPositiveReviews = new HashMap<>();
+		mapTermWithNegativeReviews = new HashMap<>();
+		mapTermWithVeryNegativeReviews = new HashMap<>();
+		mapTermWithVeryPositiveReviews = new HashMap<>();
 	}
 
-	public void excractTerm() {
+	
+	
+	/**
+	 * 
+	 */
+	public void excractTerms() {
 
 		// creates a StanfordCoreNLP object
 		Properties props = new Properties();
@@ -47,39 +67,33 @@ public class CoreNLPObj {
 
 		for (int i = 0; i < reviews.size(); i++) {
 			String text = reviews.get(i);
+			
 			// create an empty Annotation just with the given text
 			Annotation document = new Annotation(text);
+			
 			// run all Annotators on this text
 			pipeline.annotate(document);
+			
 			// these are all the sentences in this document
 			// a CoreMap is essentially a Map that uses class objects as keys and has values
 			// with custom types
 			List<CoreMap> sentences = document.get(SentencesAnnotation.class);
 
 			for (CoreMap sentence : sentences) {
-
-				// inizio prova
-				// System.out.println("\nSentiment of sentence\n");
 				String sentimentRecensione = sentence.get(SentimentCoreAnnotations.SentimentClass.class);
-				// System.out.println(mamma + "\n\n");
-				// fine prova
-
 				if (sentimentRecensione.equals("Positive") || sentimentRecensione.equals("Very positive")
 						|| sentimentRecensione.equals("Negative") || sentimentRecensione.equals("Very Negative")) {
 
 					// traversing the words in the current sentence
 					// a CoreLabel is a CoreMap with additional token-specific methods
-
 					for (CoreLabel token : sentence.get(TokensAnnotation.class)) {
 
 						// this is the text of the token
 						String word = token.get(TextAnnotation.class);
+						
 						// this is the POS tag of the token
 						String pos = token.get(PartOfSpeechAnnotation.class);
-						// this is the NER label of the token
-						// String ne = token.get(NamedEntityTagAnnotation.class);
-
-						// inizio prova hashmap
+	
 						if (pos.equals("NN") || pos.equals("NNS")) {
 							this.listForTerm.add(new Term(word));
 						}
@@ -88,12 +102,19 @@ public class CoreNLPObj {
 				}
 			}
 		}
+		
+		// remove special characters
+		removeSpecialCharacters();
+		
+	} // end extractTerms() method
 
-		this.removeTermsNotRelevant();
-	}
-
-	public void removeTermsNotRelevant() {
-
+	
+	
+	/**
+	 * This method id used to filter and remove not-relevant
+	 * terms into the listForTerm list (HashSet<Term>)
+	 */
+	public void removeSpecialCharacters() {
 		Iterator<Term> it = listForTerm.iterator();
 		while (it.hasNext()) {
 			Term t = it.next();
@@ -107,54 +128,70 @@ public class CoreNLPObj {
 			} else if (t.getWordForm().matches(".*\\d+.*")) {
 				it.remove();
 			} else {
-				for (String s : reader.getTermNotRelevant()) {
-					if (t.getWordForm().equals(s)) {
+				for (Term term : terms.getNotRelevantTerms()) {
+					if (t.getWordForm().equals(term.getWordForm())) {
 						it.remove();
 					}
 				}
 			}
 		}
-	}
+		
+	} // end removeSpecialCharacters() method
 
+	
+
+	/**
+	 * First version Positive
+	 */
 	public void createMapForPositiveTerm() {
+		
 		// creates a StanfordCoreNLP object
 		Properties props = new Properties();
 		props.setProperty("annotators", "tokenize, ssplit, pos, parse, sentiment");
 		StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
 
+		// Populate the map
+		for (Term t : listForTerm) {
+			mapTermWithPositiveReviews.put(t, new ArrayList<String>());
+		}
+
 		for (int i = 0; i < reviews.size(); i++) {
 			String text = reviews.get(i);
+			
 			// create an empty Annotation just with the given text
 			Annotation document = new Annotation(text);
+			
 			// run all Annotators on this text
 			pipeline.annotate(document);
+			
 			// these are all the sentences in this document
 			// a CoreMap is essentially a Map that uses class objects as keys and has values
 			// with custom types
 			List<CoreMap> sentences = document.get(SentencesAnnotation.class);
 
 			for (CoreMap sentence : sentences) {
-
-				// inizio prova
-				// System.out.println("\nSentiment of sentence\n");
+				String frase = sentence.get(TextAnnotation.class);
 				String sentimentRecensione = sentence.get(SentimentCoreAnnotations.SentimentClass.class);
-				// System.out.println(mamma + "\n\n");
-				// fine prova
 
 				if (sentimentRecensione.equals("Positive")) {
-					for (CoreLabel token : sentence.get(TokensAnnotation.class)) {
+					for (Term term : mapTermWithPositiveReviews.keySet()) {
+						if (frase.contains(" " + term.getWordForm() + " ")) {
+							mapTermWithPositiveReviews.get(term).add(frase);
 
-						// this is the text of the token
-						String word = token.get(TextAnnotation.class);
-						// this is the POS tag of the token
-						String pos = token.get(PartOfSpeechAnnotation.class);
-						// this is the NER label of the token
-						// String ne = token.get(NamedEntityTagAnnotation.class);
+							for (CoreLabel token : sentence.get(TokensAnnotation.class)) {
 
-						if (pos.equals("NN") || pos.equals("NNS")) {
-							for (Term t : listForTerm) {
-								if (t.getWordForm().equals(word)) {
+								// this is the text of the token
+								String word = token.get(TextAnnotation.class);
+								
+								// this is the POS tag of the token
+								String pos = token.get(PartOfSpeechAnnotation.class);
 
+								if (pos.equals("NN") || pos.equals("NNS")) {
+									for (Term t : listForTerm) {
+										if (t.getWordForm().equals(word)) {
+
+										}
+									}
 								}
 							}
 						}
@@ -162,35 +199,113 @@ public class CoreNLPObj {
 				}
 			}
 		}
+		
+	} // end method
 
-	}
+	
+	
+	/**
+	 * Second version Positive
+	 */
+	public void createMapForPositiveTerm2() {
+		
+		// creates a StanfordCoreNLP object
+		Properties props = new Properties();
+		props.setProperty("annotators", "tokenize, ssplit, pos, parse, sentiment");
+		StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
 
-	public HashSet<Term> getListForTerm() {
-		return listForTerm;
-	}
+		for (Term t : listForTerm) {
+			mapTermWithPositiveReviews.put(t, new ArrayList<String>());
+		}
 
+		for (int i = 0; i < reviews.size(); i++) {
+			String text = reviews.get(i);
+			
+			// create an empty Annotation just with the given text
+			Annotation document = new Annotation(text);
+			
+			// run all Annotators on this text
+			pipeline.annotate(document);
+			
+			// these are all the sentences in this document
+			// a CoreMap is essentially a Map that uses class objects as keys and has values
+			// with custom types
+			List<CoreMap> sentences = document.get(SentencesAnnotation.class);
+
+			for (CoreMap sentence : sentences) {
+				String frase = sentence.get(TextAnnotation.class);
+				String sentimentRecensione = sentence.get(SentimentCoreAnnotations.SentimentClass.class);
+	
+				for (Term t : mapTermWithPositiveReviews.keySet()) {
+					if (frase.contains(" " + t.getWordForm() + " ") && sentimentRecensione.equals("Positive")) {
+						mapTermWithPositiveReviews.get(t).add(frase);
+					}
+				}
+
+			}
+
+		}
+	
+	} // end method
+	
+	
+	
+	/**
+	 * First version Negative
+	 */
+	public void createMapForNegativeTerm2() {
+		
+		// creates a StanfordCoreNLP object
+		Properties props = new Properties();
+		props.setProperty("annotators", "tokenize, ssplit, pos, parse, sentiment");
+		StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
+
+		for (Term t : listForTerm) {
+			this.mapTermWithNegativeReviews.put(t, new ArrayList<String>());
+		}
+
+		for (int i = 0; i < reviews.size(); i++) {
+			String text = reviews.get(i);
+			
+			// create an empty Annotation just with the given text
+			Annotation document = new Annotation(text);
+			
+			// run all Annotators on this text
+			pipeline.annotate(document);
+			
+			// these are all the sentences in this document
+			// a CoreMap is essentially a Map that uses class objects as keys and has values
+			// with custom types
+			List<CoreMap> sentences = document.get(SentencesAnnotation.class);
+
+			for (CoreMap sentence : sentences) {
+				String frase = sentence.get(TextAnnotation.class);
+				String sentimentRecensione = sentence.get(SentimentCoreAnnotations.SentimentClass.class);
+				
+				for (Term t : mapTermWithNegativeReviews.keySet()) {
+					if (frase.contains(" " + t.getWordForm() + " ") && sentimentRecensione.equals("Negative")) {
+						this.mapTermWithNegativeReviews.get(t).add(frase);
+					}
+				}
+			}
+
+		}
+
+	} // end method
+
+	
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public HashMap<Term, List<String>> getMapTermWithPositiveReviews() {
 		return mapTermWithPositiveReviews;
 	}
 
-	public HashMap<Term, List<String>> getMapTermWithVeryPositiveReviews() {
-		return mapTermWithVeryPositiveReviews;
-	}
+	
+	
+} // end Class
 
-	public HashMap<Term, List<String>> getMapTermWithNegativeReviews() {
-		return mapTermWithNegativeReviews;
-	}
 
-	public HashMap<Term, List<String>> getMapTermWithVeryNegativeReviews() {
-		return mapTermWithVeryNegativeReviews;
-	}
 
-	public List<String> getReviews() {
-		return reviews;
-	}
-
-	public void setReviews(List<String> reviews) {
-		this.reviews = reviews;
-	}
-
-}

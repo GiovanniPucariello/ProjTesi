@@ -6,163 +6,69 @@ import java.util.List;
  * This class is used to represent terms
  * and store their attributes.
  * 
- * @author Plantone Vincenzo
  * @author Pucariello Giovanni
  *
  */
 public class Term {
 
+	public enum Relevance {Relevant, NotRelevant}
+	
+	public Relevance getRelevance() {
+		return relevance;
+	}
+
+	public void setRelevance(Relevance relevance) {
+		this.relevance = relevance;
+	}
+
+	private Relevance relevance;
 	private String wordForm;
-	private int counter;
-	private double score;
-	private double tfIdf;
-	private double scoreIdf;
+	private int numReviews;
+	private int df;
 	private double tf;
 	private double idf;
-	private int numDocs;
+	private double tfIdf;
+	private double score;
+	private double scoreIdf;
 
+
+	/**
+	 * 
+	 * @param wordform
+	 */
+	public Term(String wordform) {
+		this(wordform, null);
+		numReviews = 0;
+	}
+	
 	/**
 	 * Class constructor.
 	 * 
 	 * @param wordForm
+	 * @param relevance
 	 */
-	public Term(String wordForm) {
+	public Term(String wordForm, Relevance relevance) {
 		this.wordForm = wordForm;
-		counter = 0;
+		this.relevance = relevance;
+		numReviews = 0;
 		score = 0;
 		tfIdf = 0;
 		scoreIdf = 0;
 	}
-
-	/**
-	 * Get method of the variable "wordForm"
-	 * 
-	 * @return a string that represent a wordForm
-	 */
+	
+	
+	
 	public String getWordForm() {
 		return wordForm;
 	}
 
-	/**
-	 * Set method of the variable "wordForm"
-	 * 
-	 * @param wordForm
-	 */
-	public void setWordForm(String wordForm) {
-		this.wordForm = wordForm;
-	}
-
-	/**
-	 * Get method of the variable "counter"
-	 * 
-	 * @return the value of the counter variable
-	 */
-	public int getCounter() {
-		return counter;
-	}
-
-	/**
-	 * Set method of the variable "counter"
-	 * 
-	 * @param counter
-	 */
-	public void setCounter(int counter) {
-		this.counter = counter;
-	}
-
-	/**
-	 * Get method of the variable "score"
-	 * 
-	 * @return the value (double) of the score variable
-	 */
-	public double getScore() {
-		return score;
-	}
-
-	/**
-	 * Set method of the variable "score"
-	 * 
-	 * @param score
-	 */
-	public void setScore(float score) {
-		this.score = score;
-	}
-
-	/**
-	 * Get method of the variable "tfIdf"
-	 * 
-	 * @return the value of the tfIdf variable
-	 */
-	public double getTfIdf() {
-		return tfIdf;
-	}
-
-	/**
-	 * Set method of the variable "tfIdf"
-	 * 
-	 * @param tfIdf
-	 */
-	public void setTfIdf(float tfIdf) {
-		this.tfIdf = tfIdf;
-	}
-
-	/**
-	 * Get method of the variable "scoreIdf"
-	 * 
-	 * @return the value of the scoreIdf (double) variable
-	 */
-	public double getScoreIdf() {
-		return scoreIdf;
-	}
-
-	/**
-	 * Set method of the variable "scoreIdf"
-	 * 
-	 * @param scoreIdf
-	 */
-	public void setScoreIdf(float scoreIdf) {
-		this.scoreIdf = scoreIdf;
-	}
-
-	/**
-	 * Get method of the variable "tf"
-	 * 
-	 * @return the value of the tf variable
-	 */
-	public double getTf() {
-		return tf;
-	}
-	
-	/**
-	 * Get method of the variable "idf"
-	 * 
-	 * @return the value of the idf variable
-	 */
-	public double getIdf() {
-		return idf;
-	}
-
-	
-	
-	
-	/**
-	 * It increment the value of the variable counter
-	 */
-	public void incCounter() {
-		counter++;
-	}
-
-	
-	
-	
-	
 	/**
 	 * This method calculates the score using the value of the total sentiment.
 	 * 
 	 * @param totalSentiment
 	 */
 	public void calculateScore(int totalSentiment) {
-		score = totalSentiment / counter;
+	//	score = totalSentiment / counter;
 	}
 
 	/**
@@ -171,7 +77,7 @@ public class Term {
 	 * @param reader
 	 */
 	public void calculateIdf(Lettore reader) {
-		idf = Math.log10((reader.getCounterReviewId() / counter));
+		//idf = Math.log10((reader.getCounterReviewId() / counter));
 
 	}
 
@@ -189,20 +95,18 @@ public class Term {
 	 */
 	public void calculateTf(List<String> reviewForTerm) {
 		int numParole = 0;
-		int counterTerm = 0;
+		int countTerm = 0;
 
 		for (String s : reviewForTerm) {
 			String[] splitter = s.split(" ");
 			numParole = splitter.length + numParole;
 		}
-
 		for (String s : reviewForTerm) {
-			if (s.contains(this.getWordForm())) {
-				counterTerm++;
+			if (s.contains(wordForm)) {
+				countTerm++;
 			}
 		}
-
-		this.tf = counterTerm / numParole;
+		tf = countTerm / numParole;
 
 	}
 
@@ -215,25 +119,7 @@ public class Term {
 	}
 
 	/**
-	 * Get method of the variable "numDocs".
-	 * 
-	 * @return the number of the documents
-	 */
-	public int getNumDocs() {
-		return numDocs;
-	}
-
-	/**
-	 * Set method of the variable "numDocs".
-	 * 
-	 * @param reviewForTerm
-	 */
-	public void setNumDocs(List<String> reviewForTerm) {
-		this.numDocs = reviewForTerm.size();
-	}
-
-	/**
-	 * Overrided hashCode() method
+	 * Override of hashCode() method
 	 */
 	@Override
 	public int hashCode() {
@@ -244,7 +130,7 @@ public class Term {
 	}
 
 	/**
-	 * Overrided equals() method
+	 * Override of equals() method
 	 */
 	@Override
 	public boolean equals(Object obj) {

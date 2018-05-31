@@ -1,79 +1,86 @@
 package test;
 
 import java.io.File;
-import java.util.ArrayList;
-//import java.util.HashSet;
 import java.util.List;
+import java.util.Map.Entry;
 
+import operative.CoreNLPObj;
+import operative.Dizionario;
+import operative.Item;
 import operative.Lettore;
-//import operative.Term;
+import operative.Term;
 
+/**
+ * Class used for testing.
+ * 
+ * @author Pucariello Giovanni
+ *
+ */
 public class Test {
 
-	private Test() {}
-	
+	/**
+	 * Default private constructor.
+	 */
+	private Test() {
+	}
+
+	/**
+	 * Main method for testing.
+	 * 
+	 * @param args
+	 */
 	public static void main(String[] args) {
 
-		File termRel = new File("termRelevant.txt");
-		File termNotRel = new File("termNotRelevant.txt");
+		// Input file that contains relevant terms
+		File termsRel = new File("termRelevant.txt");
+		
+		// Input file that contains relevant terms
+		File termsNotRel = new File("termNotRelevant.txt");
+		
+		// Input file that contains a list of items with relative title
+		File itemsBookRed = new File("list_items_book(reduced).txt");
+		
+		// Input file that contains reviews
+		File recensioni = new File("recensioni.txt");
 
-		Lettore lettore = new Lettore("I:1034");
-		lettore.getReviewId();
-		lettore.getTitleId();
+		// Create a new Item identified by id
+		Item item = new Item("I:1034");
+		
+		// Dictionary that contains relevant and not relevant terms
+		Dizionario terms = new Dizionario();
 
-		lettore.readTerms(termRel);
-		lettore.readTerms(termNotRel);
+		// Create a Lettore object that read and store data from input files 
+		Lettore lettore = new Lettore(item, terms);
+		lettore.read(termsNotRel);
+		lettore.read(termsRel);
+		lettore.read(itemsBookRed);
+		lettore.read(recensioni);
 
-		// CoreNLPObj o = new CoreNLPObj(lettore);
+		// Create a CoreNLPObj 
+		CoreNLPObj o = new CoreNLPObj(terms, item);
 
-		// o.excractTerm();
-
-		//HashSet<Term> prova = new HashSet<>();
-
-		// prova = o.getListForTerm();
-
-		// for(Term t: prova) {
-		// System.out.println(t.toString());
-		// }
-
-		System.out.println(lettore.getTitoloItem());
-		System.out.println("Term Relevant: ------->" + lettore.getTermRelevant().toString());
-		System.out.println("Term Not Relevant: ------->" + lettore.getTermNotRelevant().toString());
-		// System.out.println("Review for this Item:------->" +
-		// lettore.getReviewFilteredById().toString());
-		System.out.println("Num of reviews:-------->" + lettore.getCounterReviewId());
-
-		List<String> reviewACaso = new ArrayList<>();
-
-		//int numSpace = 0;
-
-		reviewACaso.add("Carlo e franco-stasera sono nervoso e mammt mor ");
-
-		String stringa = reviewACaso.get(0);
-
-		String[] array = stringa.split(" ");
-
-		System.out.println(array.length);
-
-		reviewACaso.get(0).replace(" ", "");
-
-		System.out.println(reviewACaso.get(0).length());
-
-		reviewACaso.add(" Tenaglia");
-		reviewACaso.add("Bello Figo Gu");
-		String term = "Gu";
-
-		System.out.println(reviewACaso.size());
-		int counterTerm = 0;
-		int counter = 0;
-		for (String parola : reviewACaso) {
-			counter = parola.length() + counter;
-			if (parola.equals(term)) {
-				counterTerm++;
-			}
-
+		// Extracting terms
+		o.excractTerms();
+		
+		// Create a map for positive terms
+		o.createMapForPositiveTerm();
+		
+		// Print each terms of the map with relative list of reviews
+		for (Entry<Term, List<String>> e : o.getMapTermWithPositiveReviews().entrySet()) {
+			System.out.println(e.getKey() + " " + e.getValue());
 		}
-		System.out.println("CT: " + counterTerm + ", CP: " + counter + ", TF: " + counterTerm / counter);
+
+		// Print item's title
+		System.out.println("\n" + item.getTitle());
+		
+		// Print a list of relevant terms
+		System.out.println("Term Relevant: ------->" + terms.getRelevantTerms().toString());
+		
+		// Print a list of not relevant terms
+		System.out.println("Term Not Relevant: ------->" + terms.getNotRelevantTerms().toString());
+		
+		// Print the number of reviews
+		System.out.println("Num of reviews:-------->" + item.getReviewsFilteredById().size());
 
 	}
 

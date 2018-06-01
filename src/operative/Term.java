@@ -11,12 +11,25 @@ import java.util.List;
  */
 public class Term {
 
+	/*
+	 * Enum class that represent the relevance of a Term.
+	 */
 	public enum Relevance {Relevant, NotRelevant}
 	
+	/**
+	 * Get method that return the relevance.
+	 * 
+	 * @return relevance
+	 */
 	public Relevance getRelevance() {
 		return relevance;
 	}
 
+	/**
+	 * Set method that modifies the relevance.
+	 * 
+	 * @param relevance
+	 */
 	public void setRelevance(Relevance relevance) {
 		this.relevance = relevance;
 	}
@@ -57,7 +70,12 @@ public class Term {
 	}
 	
 	
-	
+	/**
+	 * Get method that return a string that
+	 * represent the Term.
+	 * 
+	 * @return wordForm
+	 */
 	public String getWordForm() {
 		return wordForm;
 	}
@@ -118,6 +136,8 @@ public class Term {
 
 	}
 
+	
+	
 	/**
 	 * Override of hashCode() method
 	 */
@@ -129,6 +149,8 @@ public class Term {
 		return result;
 	}
 
+	
+	
 	/**
 	 * Override of equals() method
 	 */
@@ -149,12 +171,16 @@ public class Term {
 		return true;
 	}
 	
+	
+	
 	/**
-	 * Overrided toString() method
+	 * Override of toString() method
 	 */
 	@Override
 	public String toString() {
 		return "Term [Word Form= " + wordForm + "]";
 	}
+	
+	
 
 } //end Class

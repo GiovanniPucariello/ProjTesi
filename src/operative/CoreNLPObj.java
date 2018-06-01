@@ -103,7 +103,7 @@ public class CoreNLPObj {
 			}
 		}
 		
-		// remove special characters
+		// remove special characters (like a filter)
 		removeSpecialCharacters();
 		
 	} // end extractTerms() method

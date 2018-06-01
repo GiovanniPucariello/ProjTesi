@@ -7,7 +7,7 @@ package exceptions;
  * @author Plantone Vincenzo
  *
  */
-public class ReviewNotExists extends Exception {
+public class ReviewNotExistsException extends Exception {
 	
 	/**
 	 * Default private serial_ID
@@ -17,7 +17,7 @@ public class ReviewNotExists extends Exception {
 	/**
 	 * Class constructor with no parameters
 	 */
-	public ReviewNotExists() {
+	public ReviewNotExistsException() {
 		super();
 	}
 
@@ -26,7 +26,7 @@ public class ReviewNotExists extends Exception {
 	 * 
 	 * @param message
 	 */
-	public ReviewNotExists(String message) {
+	public ReviewNotExistsException(String message) {
 		super(message);
 	}
 

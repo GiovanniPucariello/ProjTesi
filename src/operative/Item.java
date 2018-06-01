@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import exceptions.EmptyListException;
 import exceptions.ObjectAlreadyAddedException;
-import exceptions.ReviewNotExists;
+import exceptions.ReviewNotExistsException;
 
 /**
  * This class is used to store informations about items.
@@ -104,13 +104,13 @@ public class Item {
 	 * @throws EmptyListException
 	 * @throws ReviewNotExists
 	 */
-	public void removeReview(String review) throws EmptyListException, ReviewNotExists {
+	public void removeReview(String review) throws EmptyListException, ReviewNotExistsException {
 		if (reviewsFilteredById.isEmpty()) {
 			throw new EmptyListException();
 		} else if (reviewsFilteredById.contains(review)) {
 			reviewsFilteredById.remove(review);
 		} else {
-			throw new ReviewNotExists();
+			throw new ReviewNotExistsException();
 		}
 	}
 

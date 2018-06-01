@@ -138,6 +138,19 @@ public class Dizionario {
 	public Iterator<Term> notRelevantTermsIterator() {
 		return notRelevantTerms.listIterator();
 	}
+
+
+	
+	/**
+	 * Override of toString() method
+	 * 
+	 * @return Dizionario.toString()
+	 */
+	@Override
+	public String toString() {
+		return "Dizionario [Termini Rilevanti: " + getRelevantTerms() + "\nTermini Non Rilevanti: "    
+				+ getNotRelevantTerms() + "]";
+	}
 	
 	
 	

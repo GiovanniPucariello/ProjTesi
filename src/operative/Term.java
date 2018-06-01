@@ -9,7 +9,7 @@ import java.util.List;
  * @author Pucariello Giovanni
  *
  */
-public class Term {
+public class Term implements Comparable<Term>{
 
 	/*
 	 * Enum class that represent the relevance of a Term.
@@ -34,8 +34,11 @@ public class Term {
 		this.relevance = relevance;
 	}
 
+	
+	// Declaration variables
 	private Relevance relevance;
 	private String wordForm;
+	
 	private int numReviews;
 	private int df;
 	private double tf;
@@ -46,12 +49,12 @@ public class Term {
 
 
 	/**
+	 * Class constructor with a parameter.
 	 * 
 	 * @param wordform
 	 */
 	public Term(String wordform) {
 		this(wordform, null);
-		numReviews = 0;
 	}
 	
 	/**
@@ -63,6 +66,7 @@ public class Term {
 	public Term(String wordForm, Relevance relevance) {
 		this.wordForm = wordForm;
 		this.relevance = relevance;
+		
 		numReviews = 0;
 		score = 0;
 		tfIdf = 0;
@@ -80,6 +84,8 @@ public class Term {
 		return wordForm;
 	}
 
+	
+	
 	/**
 	 * This method calculates the score using the value of the total sentiment.
 	 * 
@@ -140,6 +146,8 @@ public class Term {
 	
 	/**
 	 * Override of hashCode() method
+	 * 
+	 * @return integer
 	 */
 	@Override
 	public int hashCode() {
@@ -153,6 +161,9 @@ public class Term {
 	
 	/**
 	 * Override of equals() method
+	 * 
+	 * @param obj
+	 * @return boolean
 	 */
 	@Override
 	public boolean equals(Object obj) {
@@ -174,11 +185,30 @@ public class Term {
 	
 	
 	/**
-	 * Override of toString() method
+	 * Override of toString() method that
+	 * the Term in the form of a string
+	 * 
+	 * @return Term.toString()
 	 */
 	@Override
 	public String toString() {
 		return "Term [Word Form= " + wordForm + "]";
+	}
+
+	
+	
+	/**
+	 * Override of compareTo() method
+	 * 
+	 * @param term
+	 * @return integer
+	 */
+	@Override
+	public int compareTo(Term term) {
+		if(this.equals(term)) {
+			return this.getRelevance().compareTo(term.getRelevance());
+		}
+		return 0;
 	}
 	
 	

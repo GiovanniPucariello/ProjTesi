@@ -118,6 +118,8 @@ public class Item {
 	
 	/**
 	 * Override of toString() method
+	 * 
+	 * @return Item.toString()
 	 */
 	@Override
 	public String toString() {

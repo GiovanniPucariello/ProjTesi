@@ -204,6 +204,10 @@ public class Term implements Comparable<Term>{
 	 * @return integer
 	 */
 	@Override
+	
+	// SULLA WORDFORM NON SULLA RILEVANZA O SBAGLIO ????
+	
+	
 	public int compareTo(Term term) {
 		if(this.equals(term)) {
 			return this.getRelevance().compareTo(term.getRelevance());

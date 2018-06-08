@@ -31,30 +31,25 @@ public class Test {
 	 */
 	public static void main(String[] args) {
 
-		// Input file that contains relevant terms
-		File termsRel = new File("termRelevant.txt");
+		// Creating input files
+		File termsRel = new File("termRelevant.txt");	// Input file that contains relevant terms
+		File termsNotRel = new File("termNotRelevant.txt");  // Input file that contains not relevant terms
+		File itemsBookRed = new File("list_items_book(reduced).txt");	// Input file that contains a list of items with relative title
+		File recensioni = new File("recensioni.txt");	// Input file that contains reviews
+		//File listaFilmAsin = new File("lista_film_asin_numreviews.txt");
 		
-		// Input file that contains relevant terms
-		File termsNotRel = new File("termNotRelevant.txt");
-		
-		// Input file that contains a list of items with relative title
-		File itemsBookRed = new File("list_items_book(reduced).txt");
-		
-		// Input file that contains reviews
-		File recensioni = new File("recensioni.txt");
-
 		// Create a new Item identified by id
 		Item item = new Item("I:1034");
 		
 		// Dictionary that contains relevant and not relevant terms
 		Dizionario terms = new Dizionario();
 
-		// Create a Lettore object that read and store data from input files 
+		// Create a Lettore object that reads and stores data from input files 
 		Lettore lettore = new Lettore(item, terms);
-		lettore.read(termsNotRel);
-		lettore.read(termsRel);
-		lettore.read(itemsBookRed);
-		lettore.read(recensioni);
+		lettore.readTerms(termsNotRel);
+		lettore.readTerms(termsRel);
+		lettore.readTitle(itemsBookRed);
+		lettore.readReviews(recensioni);
 
 		// Create a CoreNLPObj 
 		CoreNLPObj o = new CoreNLPObj(terms, item);

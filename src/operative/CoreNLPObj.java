@@ -27,6 +27,9 @@ import edu.stanford.nlp.util.CoreMap;
  */
 public class CoreNLPObj {
 
+	static Properties props;
+	static StanfordCoreNLP pipeline;
+	
 	private Dizionario terms;
 	private List<String> reviews;
 	private HashSet<Term> listForTerm;
@@ -54,16 +57,23 @@ public class CoreNLPObj {
 	}
 
 	
+	/**
+	 * creates a StanfordCoreNLP object, with 
+	 * POS tagging, lemmatization, NER, parsing, and sentiment
+	 */
+	public void initialize() {
+		props = new Properties();
+		props.setProperty("annotators", "tokenize, ssplit, parse, sentiment");
+		pipeline = new StanfordCoreNLP(props);
+	}
+	
 	
 	/**
 	 * 
 	 */
 	public void excractTerms() {
 
-		// creates a StanfordCoreNLP object
-		Properties props = new Properties();
-		props.setProperty("annotators", "tokenize, ssplit, pos, parse, sentiment");
-		StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
+		initialize();
 
 		for (int i = 0; i < reviews.size(); i++) {
 			String text = reviews.get(i);

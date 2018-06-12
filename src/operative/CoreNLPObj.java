@@ -149,7 +149,7 @@ public class CoreNLPObj {
 				String sentimentType = sentence.get(SentimentCoreAnnotations.SentimentClass.class);
 
 				double score = RNNCoreAnnotations.getPredictedClass(tree);
-				System.out.println("Sentiment score: " + score);
+				System.out.println("\nSentiment score: " + score);
 				System.out.println("Sentiment type: " + sentimentType);
 				System.out.println("Very positive: " + (double)Math.round(sm.get(4) * 100d) +"%");
 				System.out.println("Positive: " + (double)Math.round(sm.get(3) * 100d) +"%");

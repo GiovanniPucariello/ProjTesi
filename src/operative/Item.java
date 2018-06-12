@@ -1,6 +1,7 @@
 package operative;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import exceptions.EmptyListException;
 import exceptions.ObjectAlreadyAddedException;
@@ -12,7 +13,7 @@ import exceptions.ReviewNotExistsException;
  * @author Pucariello Giovanni
  *
  */
-public class Item {
+public class Item implements Comparable<Item> {
 
 	private String id;
 	private String title;
@@ -29,8 +30,6 @@ public class Item {
 		reviewsFilteredById = new ArrayList<>();
 	}
 
-	
-	
 	/**
 	 * Get method that returns a string that represent the title of the item.
 	 * 
@@ -49,8 +48,6 @@ public class Item {
 		this.title = title;
 	}
 
-	
-	
 	/**
 	 * Get method that returns a list of reviews filtered by id.
 	 * 
@@ -69,8 +66,6 @@ public class Item {
 		this.reviewsFilteredById = reviewsFilteredById;
 	}
 
-	
-	
 	/**
 	 * Get method that returns a string that represent the item's id
 	 * 
@@ -80,8 +75,6 @@ public class Item {
 		return id;
 	}
 
-	
-	
 	/**
 	 * This method adds a review.
 	 * 
@@ -114,8 +107,15 @@ public class Item {
 		}
 	}
 
-	
-	
+	/**
+	 * This method returns a listIterator of the reviews
+	 * 
+	 * @return reviewsFilteredById.listIterator();
+	 */
+	public Iterator<String> reviewsIterator() {
+		return reviewsFilteredById.listIterator();
+	}
+
 	/**
 	 * Override of toString() method
 	 * 
@@ -126,6 +126,14 @@ public class Item {
 		return "Item [I: " + getId() + ",	Title:" + getTitle() + ",	Reviews:" + getReviewsFilteredById() + "]";
 	}
 
-	
-	
+	/**
+	 * Override of compareTo() method
+	 * 
+	 * @param o
+	 */
+	@Override
+	public int compareTo(Item o) {
+		return this.getId().compareTo(o.getId());
+	}
+
 } // end Class

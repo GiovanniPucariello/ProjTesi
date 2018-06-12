@@ -27,8 +27,6 @@ public class Dizionario {
 		notRelevantTerms = new ArrayList<>();
 	}
 
-	
-	
 	/**
 	 * Get method that return a list of relevant terms.
 	 * 
@@ -47,8 +45,6 @@ public class Dizionario {
 		this.relevantTerms = relevantTerms;
 	}
 
-	
-	
 	/**
 	 * Get method that return a list of not-relevant terms.
 	 * 
@@ -67,8 +63,6 @@ public class Dizionario {
 		this.notRelevantTerms = notRelevantTerms;
 	}
 
-	
-	
 	/**
 	 * This method adds relevant and not-relevant terms.
 	 * 
@@ -117,21 +111,17 @@ public class Dizionario {
 		}
 	} // end removeTerm() method
 
-	
-	
 	/**
-	 * This method returns a listIterator of
-	 * the relevant terms
+	 * This method returns a listIterator of the relevant terms
 	 * 
 	 * @return relevantTerms.listIterator()
 	 */
 	public Iterator<Term> relevantTermsIterator() {
 		return relevantTerms.listIterator();
 	}
-	
+
 	/**
-	 * This method returns a listIterator of
-	 * the not-relevant terms
+	 * This method returns a listIterator of the not-relevant terms
 	 * 
 	 * @return notRelevantTerms.listIterator();
 	 */
@@ -139,8 +129,6 @@ public class Dizionario {
 		return notRelevantTerms.listIterator();
 	}
 
-
-	
 	/**
 	 * Override of toString() method
 	 * 
@@ -148,10 +136,8 @@ public class Dizionario {
 	 */
 	@Override
 	public String toString() {
-		return "Dizionario [Termini Rilevanti: " + getRelevantTerms() + "\nTermini Non Rilevanti: "    
+		return "Dizionario [Termini Rilevanti: " + getRelevantTerms() + "\nTermini Non Rilevanti: "
 				+ getNotRelevantTerms() + "]";
 	}
-	
-	
-	
+
 } // end Class

@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 
 import edu.stanford.nlp.ling.CoreAnnotations.PartOfSpeechAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.SentencesAnnotation;
@@ -27,12 +28,12 @@ import edu.stanford.nlp.util.CoreMap;
  */
 public class CoreNLPObj {
 
-	static Properties props;
-	static StanfordCoreNLP pipeline;
+	private Properties props;
+	private StanfordCoreNLP pipeline;
 	
 	private Dizionario terms;
 	private List<String> reviews;
-	private HashSet<Term> listForTerm;
+	private Set<Term> listForTerm;
 	
 	private HashMap<Term, List<String>> mapTermWithPositiveReviews;
 	private HashMap<Term, List<String>> mapTermWithVeryPositiveReviews;
@@ -68,46 +69,27 @@ public class CoreNLPObj {
 	}
 	
 	
+	
+	
 	/**
 	 * 
 	 */
 	public void excractTerms() {
-
 		initialize();
-
-		for (int i = 0; i < reviews.size(); i++) {
-			String text = reviews.get(i);
-			
-			// create an empty Annotation just with the given text
+		for (String text: reviews) {
 			Annotation document = new Annotation(text);
-			
-			// run all Annotators on this text
 			pipeline.annotate(document);
-			
-			// these are all the sentences in this document
-			// a CoreMap is essentially a Map that uses class objects as keys and has values
-			// with custom types
 			List<CoreMap> sentences = document.get(SentencesAnnotation.class);
-
 			for (CoreMap sentence : sentences) {
 				String sentimentRecensione = sentence.get(SentimentCoreAnnotations.SentimentClass.class);
-				if (sentimentRecensione.equals("Positive") || sentimentRecensione.equals("Very positive")
-						|| sentimentRecensione.equals("Negative") || sentimentRecensione.equals("Very Negative")) {
-
-					// traversing the words in the current sentence
-					// a CoreLabel is a CoreMap with additional token-specific methods
+				if (!sentimentRecensione.equals("Neutral")) {
 					for (CoreLabel token : sentence.get(TokensAnnotation.class)) {
-
 						// this is the text of the token
-						String word = token.get(TextAnnotation.class);
-						
-						// this is the POS tag of the token
+						Term word = new Term(token.get(TextAnnotation.class));
 						String pos = token.get(PartOfSpeechAnnotation.class);
-	
 						if (pos.equals("NN") || pos.equals("NNS")) {
-							this.listForTerm.add(new Term(word));
+							listForTerm.add(word);
 						}
-
 					}
 				}
 			}
@@ -153,16 +135,13 @@ public class CoreNLPObj {
 	/**
 	 * First version Positive
 	 */
-	public void createMapForPositiveTerm() {
-		
-		// creates a StanfordCoreNLP object
-		Properties props = new Properties();
-		props.setProperty("annotators", "tokenize, ssplit, pos, parse, sentiment");
-		StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
-
+	public void createMaps() {
 		// Populate the map
 		for (Term t : listForTerm) {
 			mapTermWithPositiveReviews.put(t, new ArrayList<String>());
+			mapTermWithVeryPositiveReviews.put(t, new ArrayList<String>());
+			mapTermWithNegativeReviews.put(t, new ArrayList<String>());
+			mapTermWithVeryNegativeReviews.put(t, new ArrayList<String>());
 		}
 
 		for (int i = 0; i < reviews.size(); i++) {
@@ -187,23 +166,24 @@ public class CoreNLPObj {
 					for (Term term : mapTermWithPositiveReviews.keySet()) {
 						if (frase.contains(" " + term.getWordForm() + " ")) {
 							mapTermWithPositiveReviews.get(term).add(frase);
-
-							for (CoreLabel token : sentence.get(TokensAnnotation.class)) {
-
-								// this is the text of the token
-								String word = token.get(TextAnnotation.class);
-								
-								// this is the POS tag of the token
-								String pos = token.get(PartOfSpeechAnnotation.class);
-
-								if (pos.equals("NN") || pos.equals("NNS")) {
-									for (Term t : listForTerm) {
-										if (t.getWordForm().equals(word)) {
-
-										}
-									}
-								}
-							}
+						}
+					}
+				} else if (sentimentRecensione.equals("Very positive")) {
+					for (Term term : mapTermWithVeryPositiveReviews.keySet()) {
+						if (frase.contains(" " + term.getWordForm() + " ")) {
+							mapTermWithVeryPositiveReviews.get(term).add(frase);
+						}
+					}
+				} else if (sentimentRecensione.equals("Negative")) {
+					for (Term term : mapTermWithNegativeReviews.keySet()) {
+						if (frase.contains(" " + term.getWordForm() + " ")) {
+							mapTermWithNegativeReviews.get(term).add(frase);
+						}
+					}
+				} else if (sentimentRecensione.equals("Very negative")) {
+					for (Term term : mapTermWithVeryNegativeReviews.keySet()) {
+						if (frase.contains(" " + term.getWordForm() + " ")) {
+							mapTermWithVeryNegativeReviews.get(term).add(frase);
 						}
 					}
 				}

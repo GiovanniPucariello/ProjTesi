@@ -13,9 +13,6 @@ import java.util.Set;
 
 import org.ejml.simple.SimpleMatrix;
 
-import com.stanford_nlp.model.SentimentClassification;
-import com.stanford_nlp.model.SentimentResult;
-
 import edu.stanford.nlp.ling.CoreAnnotations.PartOfSpeechAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.SentencesAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.TextAnnotation;

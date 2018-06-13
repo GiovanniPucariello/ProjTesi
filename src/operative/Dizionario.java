@@ -12,6 +12,7 @@ import operative.Term.Relevance;
  * separated lists.
  * 
  * @author Pucariello Giovanni
+ * @author Plantone Vincenzo
  *
  */
 public class Dizionario {

@@ -3,19 +3,23 @@ package operative;
 import java.util.List;
 
 /**
- * This class is used to represent terms
- * and store their attributes.
+ * This class is used to represent terms and store their attributes.
+ * 
+ * CLASSE DA MIGLIORARE (NON DEFINITIVA)
  * 
  * @author Pucariello Giovanni
+ * @author Plantone Vincenzo
  *
  */
-public class Term implements Comparable<Term>{
+public class Term implements Comparable<Term> {
 
 	/*
 	 * Enum class that represent the relevance of a Term.
 	 */
-	public enum Relevance {Relevant, NotRelevant}
-	
+	public enum Relevance {
+		Relevant, NotRelevant
+	}
+
 	/**
 	 * Get method that return the relevance.
 	 * 
@@ -34,11 +38,10 @@ public class Term implements Comparable<Term>{
 		this.relevance = relevance;
 	}
 
-	
 	// Declaration variables
 	private Relevance relevance;
 	private String wordForm;
-	
+
 	private int numReviews;
 	private int df;
 	private double tf;
@@ -46,7 +49,6 @@ public class Term implements Comparable<Term>{
 	private double tfIdf;
 	private double score;
 	private double scoreIdf;
-
 
 	/**
 	 * Class constructor with a parameter.
@@ -56,7 +58,7 @@ public class Term implements Comparable<Term>{
 	public Term(String wordform) {
 		this(wordform, null);
 	}
-	
+
 	/**
 	 * Class constructor.
 	 * 
@@ -66,17 +68,15 @@ public class Term implements Comparable<Term>{
 	public Term(String wordForm, Relevance relevance) {
 		this.wordForm = wordForm;
 		this.relevance = relevance;
-		
+
 		numReviews = 0;
 		score = 0;
 		tfIdf = 0;
 		scoreIdf = 0;
 	}
-	
-	
+
 	/**
-	 * Get method that return a string that
-	 * represent the Term.
+	 * Get method that return a string that represent the Term.
 	 * 
 	 * @return wordForm
 	 */
@@ -84,15 +84,13 @@ public class Term implements Comparable<Term>{
 		return wordForm;
 	}
 
-	
-	
 	/**
 	 * This method calculates the score using the value of the total sentiment.
 	 * 
 	 * @param totalSentiment
 	 */
 	public void calculateScore(int totalSentiment) {
-	//	score = totalSentiment / counter;
+		// score = totalSentiment / counter;
 	}
 
 	/**
@@ -101,7 +99,7 @@ public class Term implements Comparable<Term>{
 	 * @param reader
 	 */
 	public void calculateIdf(Lettore reader) {
-		//idf = Math.log10((reader.getCounterReviewId() / counter));
+		// idf = Math.log10((reader.getCounterReviewId() / counter));
 
 	}
 
@@ -142,8 +140,6 @@ public class Term implements Comparable<Term>{
 
 	}
 
-	
-	
 	/**
 	 * Override of hashCode() method
 	 * 
@@ -157,8 +153,6 @@ public class Term implements Comparable<Term>{
 		return result;
 	}
 
-	
-	
 	/**
 	 * Override of equals() method
 	 * 
@@ -181,12 +175,9 @@ public class Term implements Comparable<Term>{
 			return false;
 		return true;
 	}
-	
-	
-	
+
 	/**
-	 * Override of toString() method that
-	 * the Term in the form of a string
+	 * Override of toString() method that the Term in the form of a string
 	 * 
 	 * @return Term.toString()
 	 */
@@ -195,8 +186,6 @@ public class Term implements Comparable<Term>{
 		return "Term [Word Form= " + wordForm + "]";
 	}
 
-	
-	
 	/**
 	 * Override of compareTo() method
 	 * 
@@ -207,7 +196,5 @@ public class Term implements Comparable<Term>{
 	public int compareTo(Term term) {
 		return this.getRelevance().compareTo(term.getRelevance());
 	}
-	
-	
 
-} //end Class
+} // end Class

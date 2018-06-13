@@ -11,6 +11,7 @@ import exceptions.ReviewNotExistsException;
  * This class is used to store informations about items.
  * 
  * @author Pucariello Giovanni
+ * @author Plantone Vincenzo
  *
  */
 public class Item implements Comparable<Item> {
@@ -130,6 +131,7 @@ public class Item implements Comparable<Item> {
 	 * Override of compareTo() method
 	 * 
 	 * @param o
+	 * @return a int value between -1, 0 and 1
 	 */
 	@Override
 	public int compareTo(Item o) {

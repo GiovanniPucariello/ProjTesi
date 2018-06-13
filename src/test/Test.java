@@ -14,6 +14,7 @@ import operative.Term;
  * Class used for testing.
  * 
  * @author Pucariello Giovanni
+ * @author Plantone Vincenzo
  *
  */
 public class Test {
@@ -63,9 +64,10 @@ public class Test {
 
 		// Print each terms of the map with relative list of reviews
 		for (Entry<Term, List<String>> e : o.getMapTermWithPositiveReviews().entrySet()) {
-			System.out.println("===============================================================================================");
+			System.out.println(
+					"===============================================================================================");
 			System.out.println(e.getKey() + " " + e.getValue());
-			for(String frase: e.getValue()) {
+			for (String frase : e.getValue()) {
 				System.out.println("\nReview: " + frase);
 				o.getSentimentResult(frase);
 			}

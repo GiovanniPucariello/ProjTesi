@@ -8,9 +8,10 @@ import exceptions.ObjectAlreadyAddedException;
 import operative.Term.Relevance;
 
 /**
- * This class is used to read and storage input data from files.
+ * This class is used to read input data from files.
  * 
  * @author Pucariello Giovanni
+ * @author Plantone Vincenzo
  *
  */
 public class Lettore {

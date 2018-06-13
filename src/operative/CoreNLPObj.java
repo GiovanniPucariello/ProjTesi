@@ -26,9 +26,10 @@ import edu.stanford.nlp.util.CoreMap;
 
 
 /**
- * 
+ * CLASSE DA MIGLIORARE (NON DEFINITIVA)
  * 
  * @author Pucariello Giovanni
+ * @author Plantone Vincenzo
  *
  */
 public class CoreNLPObj {
@@ -74,10 +75,9 @@ public class CoreNLPObj {
 	}
 	
 	
-	
-	
 	/**
-	 * 
+	 * Extraction of relevant and not relevant terms
+	 * from all reviews of the item
 	 */
 	public void excractTerms() {
 		initialize();
@@ -135,7 +135,11 @@ public class CoreNLPObj {
 		
 	} // end removeSpecialCharacters() method
 
-	
+	/**
+	 * It return the result of the text's sentiment
+	 * 
+	 * @param text
+	 */
 	public void getSentimentResult(String text) {
 		if (text != null && text.length() > 0) {
 			
@@ -162,53 +166,84 @@ public class CoreNLPObj {
 	}
 	
 
+	/**
+	 * 
+	 * @return
+	 */
 	public Properties getProps() {
 		return props;
 	}
 
-
+	/**
+	 * 
+	 * @return
+	 */
 	public StanfordCoreNLP getPipeline() {
 		return pipeline;
 	}
 
-
+	/**
+	 * 
+	 * @return
+	 */
 	public Dizionario getTerms() {
 		return terms;
 	}
 
 
+	/**
+	 * 
+	 * @return
+	 */
 	public List<String> getReviews() {
 		return reviews;
 	}
 
 
+	/**
+	 * 
+	 * @return
+	 */
 	public Set<Term> getListForTerm() {
 		return listForTerm;
 	}
 
-
+	/**
+	 * 
+	 * @return
+	 */
 	public HashMap<Term, List<String>> getMapTermWithPositiveReviews() {
 		return mapTermWithPositiveReviews;
 	}
 
-
+	/**
+	 * 
+	 * @return
+	 */
 	public HashMap<Term, List<String>> getMapTermWithVeryPositiveReviews() {
 		return mapTermWithVeryPositiveReviews;
 	}
 
-
+	/**
+	 * 
+	 * @return
+	 */
 	public HashMap<Term, List<String>> getMapTermWithNegativeReviews() {
 		return mapTermWithNegativeReviews;
 	}
 
-
+	/**
+	 * 
+	 * @return
+	 */
 	public HashMap<Term, List<String>> getMapTermWithVeryNegativeReviews() {
 		return mapTermWithVeryNegativeReviews;
 	}
 
 
 	/**
-	 * First version Positive
+	 * This method is used to populate a map for each
+	 * kind of sentiment.
 	 */
 	public void createMaps() {
 		// Populate the map
